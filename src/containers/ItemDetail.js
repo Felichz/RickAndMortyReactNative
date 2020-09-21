@@ -39,11 +39,16 @@ export const ItemDetail = ({entity, id, onPressRelatedItem = () => {}}) => {
         type: itemData.type,
         dimension: itemData.dimension,
       };
+
       relatedTitle = 'Some residents';
-      related = {
-        entity: 'CHARACTERS',
-        array: itemData.residents.slice(0, 5),
-      };
+      const residentList = itemData.residents.slice(0, 5);
+
+      if (residentList.length && residentList[0].id) {
+        related = {
+          entity: 'CHARACTERS',
+          array: residentList,
+        };
+      }
 
       break;
     case 'EPISODES':
@@ -52,11 +57,16 @@ export const ItemDetail = ({entity, id, onPressRelatedItem = () => {}}) => {
         'release date': itemData.air_date,
         episode: itemData.episode,
       };
+
       relatedTitle = 'Some characters of this episode';
-      related = {
-        entity: 'CHARACTERS',
-        array: itemData.characters.slice(0, 5),
-      };
+      let characterList = itemData.characters.slice(0, 5);
+
+      if (characterList.length && characterList[0].id) {
+        related = {
+          entity: 'CHARACTERS',
+          array: characterList,
+        };
+      }
   }
 
   return (
