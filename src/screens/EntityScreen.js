@@ -1,22 +1,35 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {Container, Content, View, Text, Item, Input, Icon} from 'native-base';
+import {Container, Content} from 'native-base';
 
-export const EntityScreen = ({entity}) => {
+import {Header} from '../components/Header';
+import {SearchFields} from '../containers/SearchFields';
+import {EntityItemList} from '../containers/EntityItemList';
+
+export const EntityScreen = ({entity, navigation}) => {
+  const [searchValues, setSearchValues] = useState({});
+
+  function handlePressItem(id) {
+    navigation.navigate('Detail', {
+      entity,
+      id,
+    });
+  }
+
   return (
     <Container>
-      <View style={styles.header}>
-        <Item regular style={{...styles.searchBox}}>
-          <Icon active type="MaterialIcons" name="search" />
-          <Input placeholder="Search by name" style={{...styles.searchInput}}/>
-        </Item>
-        <Item regular style={{...styles.searchBox}}>
-          <Icon active type="MaterialIcons" name="search" />
-          <Input placeholder="Search by type" style={{...styles.searchInput}}/>
-        </Item>
-      </View>
-      <Content style={styles.content}>
-        <Text>{entity} screen</Text>
+      <Header>
+        <SearchFields
+          entity={entity}
+          onSearch={(values) => setSearchValues(values)}
+        />
+      </Header>
+      <Content contentContainerStyle={styles.content}>
+        <EntityItemList
+          entity={entity}
+          searchValues={searchValues}
+          onPressItem={handlePressItem}
+        />
       </Content>
     </Container>
   );
@@ -24,20 +37,7 @@ export const EntityScreen = ({entity}) => {
 
 const styles = StyleSheet.create({
   content: {
-    paddingHorizontal: 10,
+    padding: 10,
+    alignItems: 'center',
   },
-  header: {
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    backgroundColor: '#3498db',
-  },
-  searchBox: {
-    borderRadius: 5,
-    marginVertical: 3,
-    backgroundColor: 'white',
-  },
-  searchInput: {
-    fontSize: 15,
-    height: 40
-  }
 });
